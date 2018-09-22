@@ -20,6 +20,10 @@ public class CD implements toBeStored {
 	public String toString() {
 		return "CD [artist=" + artist + ", title=" + title + ", year=" + year + ", weight=" + weight()+ "]";
 	}
+
+	public int size() {
+		return 1;
+	}
 	
 	
 	

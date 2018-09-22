@@ -46,6 +46,10 @@ public class Airport {
 		this.arrAirPlanes = arrAirPlanes;
 	}
 	
+	public ArrayList<Flight> getVols(){
+		return arrflights;
+	}
+	
 	
 	public String addAirPlane(Airplane airplane) {
 		String salida= "El avion ya existe";

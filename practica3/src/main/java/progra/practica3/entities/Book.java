@@ -21,6 +21,10 @@ public class Book implements toBeStored {
 	public String toString() {
 		return "Book [writer=" + writer + ", name=" + name + ", peso=" + peso + "]";
 	}
+
+	public int size() {
+		return 1;
+	}
 	
 	
 

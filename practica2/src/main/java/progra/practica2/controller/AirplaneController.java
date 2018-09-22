@@ -3,6 +3,8 @@ package progra.practica2.controller;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.print.attribute.AttributeSetUtilities;
+
 import progra.practica2.entities.Airplane;
 import progra.practica2.entities.Airport;
 import progra.practica2.entities.Flight;
@@ -53,6 +55,28 @@ public class AirplaneController {
 		// afegir vol
 		else if(a=='2') {
 			option=8;
+			
+		// sortir
+		}else if(a=='x') {
+			option=4;
+		}
+		return option;
+		
+	}
+	
+	public int menu2() {
+		int option=6;
+		writeMostrar();
+		char a = sc.next().charAt(0);
+		
+		//afegir avio
+		if(a=='1') {
+			option=9;
+		}
+		
+		// afegir vol
+		else if(a=='2') {
+			option=10;
 			
 		// sortir
 		}else if(a=='x') {
@@ -125,5 +149,20 @@ public class AirplaneController {
     	}
     	System.out.println(text);
     	return option;
+	}
+	
+	public void mostrarAvions() {
+		System.out.println(Utils.mostrarAviones(airport.getArrAirPlanes()));
+	}
+	
+	public void mostrarVols() {
+		System.out.println(Utils.mostrarVuelos(airport.getVols()));
+	}
+	
+	public void writeMostrar() {
+    	System.out.println("Tria la operacio:");
+    	System.out.println("[1] Mostrar avions de l aeroport actual");
+    	System.out.println("[2] Mostrar vols de l aeroport  actual");
+    	System.out.println("[x] Sortida"); 
 	}
 }

@@ -37,5 +37,12 @@ public class App
         box.add(cd3);
         System.out.println("--------------------------------------------------------------------------------------");
         System.out.println(box);
+        System.out.println("--------------------------------------------------------------------------------------");
+        Box box2=new Box(10);
+        box2.add(book1);
+        box2.add(box);
+        box2.add(box);
+        box2.add(cd1);
+        System.out.println(box2);
     }
 }

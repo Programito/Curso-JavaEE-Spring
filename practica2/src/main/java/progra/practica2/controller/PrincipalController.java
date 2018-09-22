@@ -19,20 +19,33 @@ public class PrincipalController {
 
 	private AirplaneController airplaneController;
 	private Airport airportActual;
-
+	
+	private String[] nomOpcio;
+	
 	public PrincipalController() {
 		arrAirplanes = new ArrayList<Airplane>();
 		arrFlights = new ArrayList<Flight>();
 		arrAirports = new ArrayList<Airport>();
 		idAirplane = idFlight = idAirport = 0L;
 
-		// afegim els avions i aerports
 		addAirports();
 		addAirplanes();
-
-		// mostrarAirplanes();
-		// mostrarAirports();
-
+		
+		nomOpcio=new String[14];
+		nomOpcio[0]="Controlador de tots els aeroports";
+		nomOpcio[1]="Seleccionar un aeroport";
+		nomOpcio[2]="Mostrar tots els avions de TOTS els aeroports";
+		nomOpcio[3]="Mostrar tots els vols de TOTS els aeroports";
+		nomOpcio[4]="Menu per afegir o mostrar d UN aeroport";
+		nomOpcio[5]="Menu afegir d UN aeroport";
+		nomOpcio[6]="Menu mostrar d UN aeroport";
+		nomOpcio[7]="Menu afegir avio a UN aeroport";
+		nomOpcio[8]="Menu afegir vol a UN aeroport";
+		nomOpcio[9]="Mostrar avions per UN aeroport";
+		nomOpcio[10]="Mostrar vols per UN aeroport";
+		nomOpcio[11]="Afegir un avio a TOTS el aeroports";
+		nomOpcio[12]="Afegir un aeroport";
+		nomOpcio[13]="Opcio NO valida";
 		start();
 	}
 
@@ -44,11 +57,26 @@ public class PrincipalController {
 
 		while (true) {
 			
-			System.out.println("estamos en la option:" + option);
+			System.out.println("----------------------------------------------------------------------");
+			if(option>=0 && option<=12 ) {
+				System.out.println(nomOpcio[option]);
+			}
+			else {
+				System.out.println(nomOpcio[13]);
+			}
 			
 			// Opcio de tots el aeroports
 			if (option == 0) {
 				option = mostrarOpcions1(sc);
+				if(option==4) {
+					option=11;
+				}
+				else if(option==5) {
+					option=12;
+				}
+				else if(option<0 || option > 5) {
+					option=0;
+				}
 			}
 
 			// Seleccionar aeroport
@@ -86,7 +114,7 @@ public class PrincipalController {
 			} 
 			// menu mostrar d l aeroport
 			else if (option == 6) {
-				
+				option=airplaneController.menu2();
 			}
 			
 			// menu afegir avio
@@ -101,16 +129,30 @@ public class PrincipalController {
 			
 			//mostrar avions d 1 aeroport
 			else if (option == 9) {
-				
+				airplaneController.mostrarAvions();
+				option=4;
 			}
 			
 			//mostrar vols d 1 aeroport
 			else if (option == 10) {
-				
+				airplaneController.mostrarVols();
+				option=4;
+			}
+			
+			// afegir un avio a tots el aeroports
+			else if(option == 11) {
+				afegirAvio(sc);
+				option=0;
+			}
+			
+			// afegir un aeroport
+			else if(option== 12) {
+				afegirAeroport(sc);
+				option=0;
 			}
 
+			//opcio no valida
 			else {
-				System.out.println("opcio no valida");
 				option = 0;
 				airportActual = null;
 				airplaneController = null;
@@ -118,6 +160,7 @@ public class PrincipalController {
 		}
 	}
 
+	//Inicialitzar aeroports
 	public void addAirports() {
 		// afegir aeroports
 		arrAirports.add(new Airport(idAirport, "Barcelona"));
@@ -130,13 +173,14 @@ public class PrincipalController {
 		idAirport++;
 	}
 
+	//Inicialitzar avions
 	public void addAirplanes() {
 		arrAirplanes.add(new Airplane(idAirplane, "HA-LOL", 42));
 		idAirplane++;
 		arrAirplanes.add(new Airplane(idAirplane, "G-OWAC", 101));
 		idAirplane++;
 		arrAirplanes.add(new Airplane(idAirplane, "Fly:03", 80));
-
+		idAirplane++;
 	}
 
 	public void mostrarAirports() {
@@ -183,7 +227,27 @@ public class PrincipalController {
 		System.out.println("[1] Seleccionar aeroport");
 		System.out.println("[2] Mostrar avions");
 		System.out.println("[3] Mostrar vols");
+		System.out.println("[4] Afegir un Avio");
+		System.out.println("[5] Afegir un Aeroport");
 		int option = sc.nextInt();
 		return option;
+	}
+	
+	public void afegirAvio(Scanner sc) {
+		System.out.println("Introduir nou avio");
+		System.out.println("Introdudeix Nom:");
+		String nom=sc.next();
+		System.out.println("Introdudeix Capacitat:");
+		int capacitat = sc.nextInt();
+		arrAirplanes.add(new Airplane(idAirplane, nom, capacitat));
+		idAirplane++;
+	}
+	
+	public void afegirAeroport(Scanner sc) {
+		System.out.println("Introduir nou aeroport");
+		System.out.println("Introdudeix Ciuat:");
+		String ciutat=sc.next();
+		arrAirports.add(new Airport(idAirport, ciutat));
+		idAirport++;
 	}
 }
