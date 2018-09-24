@@ -22,7 +22,7 @@ public class Purchase {
 		return preuUnitari;
 	}
 	
-	public int getCantitat(String nom) {
+	public int getCantitat() {
 		return cantitat;
 	}
 	
