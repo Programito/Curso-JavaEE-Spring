@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Dungeon Game</title>
+<style>
+#casillas {
+	margin-top: 5px;
+	position: absolute;
+	aling-items: center;
+	justify-content: center
+}
+
+.portada {
+	margin-top:5px;
+	border: 1px solid red;
+}
+
+body{
+	background-color: cyan;
+}
+</style>
+</head>
+<body>
+
+	<header>
+		<img class="portada" th:src="@{/images/img2.png}" width="100%"
+			height="250px"></img>
+	</header>
+
+	<div id="casillas" th:each="i : ${#numbers.sequence( 1, 1200,50)}">
+		<img th:each="j : ${#numbers.sequence( 1, 800,50)}"
+			th:src="@{/images/fondo.png}"
+			th:style="|position:absolute;left:${i}px;top:${j}px;width: 50px; height:50px;border: 1px solid black;|"></img>
+		<img th:src="@{/images/Vampire.png}"
+			th:style="|position:absolute;left:200px;top:200px;width:40px; height:40px;margin-left:5px;;margin-top:5px|"></img>
+		<img th:src="@{/images/Vampire.png}"
+			th:style="|position:absolute;left:450px;top:450px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img>
+		<img th:src="@{/images/Explorer.png}"
+			th:style="|position:absolute;left:0px;top:0px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img>
+	</div>
+
+
+	<script>
+		document.body.addEventListener("keydown", function(event) {
+			var enlace = "[[@{/game/}]]";
+			// arriba
+			if (event.keyCode === 87 || event.keyCode === 38) {
+				window.location.replace(enlace + 0);
+			}
+			// derecha
+			else if (event.keyCode === 68 || event.keyCode === 39) {
+				window.location.replace(enlace + 1);
+			}
+			// abajo
+			else if (event.keyCode === 83 || event.keyCode === 40) {
+				window.location.replace(enlace + 2);
+			}
+			// izquierda
+			else if (event.keyCode === 65 || event.keyCode === 37) {
+				window.location.replace(enlace + 3);
+			}
+
+		});
+	</script>
+
+</body>
+</html>
