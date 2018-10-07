@@ -12,11 +12,11 @@
 }
 
 .portada {
-	margin-top:5px;
+	margin-top: 5px;
 	border: 1px solid red;
 }
 
-body{
+body {
 	background-color: cyan;
 }
 </style>
@@ -28,16 +28,28 @@ body{
 			height="250px"></img>
 	</header>
 
-	<div id="casillas" th:each="i : ${#numbers.sequence( 1, 1200,50)}">
-		<img th:each="j : ${#numbers.sequence( 1, 800,50)}"
+<!-- 	<h2
+		th:text="|Player y:${gameGrid.getPlayer().getY()}, x${gameGrid.getPlayer().getX()}|"></h2>
+	<h2 th:each="vampire:${gameGrid.getVampires()}"
+		th:text="|Vampire y:${vampire.getY()}, x${vampire.getX()}|"></h2> -->
+
+
+
+
+
+	<div id="casillas" th:each="i : ${#numbers.sequence( 1, 750,50)}">
+		<img th:each="j : ${#numbers.sequence( 1, 500,50)}"
 			th:src="@{/images/fondo.png}"
 			th:style="|position:absolute;left:${i}px;top:${j}px;width: 50px; height:50px;border: 1px solid black;|"></img>
-		<img th:src="@{/images/Vampire.png}"
+		<!-- 	<img th:src="@{/images/Vampire.png}"
 			th:style="|position:absolute;left:200px;top:200px;width:40px; height:40px;margin-left:5px;;margin-top:5px|"></img>
 		<img th:src="@{/images/Vampire.png}"
-			th:style="|position:absolute;left:450px;top:450px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img>
+			th:style="|position:absolute;left:450px;top:450px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img> -->
+		<img th:each="vampire:${gameGrid.getVampires()}"
+			th:src="@{/images/Vampire.png}"
+			th:style="|position:absolute;left:${vampire.getWebX()}px;top:${vampire.getWebY()}px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img>
 		<img th:src="@{/images/Explorer.png}"
-			th:style="|position:absolute;left:0px;top:0px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img>
+			th:style="|position:absolute;left:${gameGrid.getPlayer().getWebX()}px;top:${gameGrid.getPlayer().getWebY()}px;width: 40px; height:40px;margin-left:5px;margin-top:5px|"></img>
 	</div>
 
 
