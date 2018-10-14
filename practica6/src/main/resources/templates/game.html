@@ -33,9 +33,13 @@ body {
 	<h2 th:each="vampire:${gameGrid.getVampires()}"
 		th:text="|Vampire y:${vampire.getY()}, x${vampire.getX()}|"></h2> -->
 
-
-
-
+	<h2 th:text="${turnos}"></h2>
+	
+	<div th:if="${final}">
+		<h3 th:if="${gameGrid.isWin()}">Ganastes!!</h3>
+		<h3 th:if="${turnos}<=0">Has perdido!</h3>
+		<button type="button" onclick="reiniciar()">Volver a empezar</button> 
+	</div>
 
 	<div id="casillas" th:each="i : ${#numbers.sequence( 1, 750,50)}">
 		<img th:each="j : ${#numbers.sequence( 1, 500,50)}"
@@ -74,6 +78,11 @@ body {
 			}
 
 		});
+		
+		function reiniciar(){
+			window.location.replace("[[@{/}]]");
+		}
+		
 	</script>
 
 </body>

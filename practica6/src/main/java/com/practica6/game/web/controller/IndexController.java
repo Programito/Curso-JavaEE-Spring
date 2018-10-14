@@ -15,28 +15,33 @@ import com.practica6.game.utils.Position;
 @Controller
 public class IndexController {
 	GameGrid gameGrid;
+	int turnos;
+	Boolean finalizado;
 	
 	@GetMapping("/")
 	public String hola(Model model) {
 		gameGrid=new GameGrid(10,15);
 		gameGrid.start(10);
-		model.addAttribute("mensaje", "adios");
+		turnos=200;
+		finalizado=false;
 		model.addAttribute("gameGrid",gameGrid);
+		model.addAttribute("turnos",turnos);
+		model.addAttribute("final", finalizado);
 		return "game";
 	}
 	
 	
 	@RequestMapping(value="/game",method=RequestMethod.GET)
 	public String editar( Model model) {
+		finalizado=	(turnos<=0) || gameGrid.isWin(); 
 		if(gameGrid==null) {
 			gameGrid=new GameGrid(10,15);
-//			gameGrid.addPlayer(4, 4);
-//			gameGrid.addVampire(1, 1);
-//			gameGrid.addVampire(2, 1);
 			gameGrid.start(10);
+			turnos=150;
 		}
-		model.addAttribute("mensaje", "hola");
 		model.addAttribute("gameGrid",gameGrid);
+		model.addAttribute("turnos",turnos);
+		model.addAttribute("final", finalizado);
 		return "game";
 	}
 	
@@ -46,9 +51,10 @@ public class IndexController {
 		if(gameGrid==null) {
 			gameGrid=new GameGrid(10,15);
 			gameGrid.start(10);
+			turnos=150;
 			return "game";
 		}
-		if(id>=0) {
+		if(id>=0 && !finalizado) {
 			if(id==0) {
 				gameGrid.movePlayer("w");
 			}
@@ -62,9 +68,13 @@ public class IndexController {
 				gameGrid.movePlayer("a");
 			}
 			gameGrid.moveVampire();
+			turnos--;
+			finalizado=	(turnos<=0) || gameGrid.isWin(); 
 		}
 		model.addAttribute("mensaje", "hola");
 		model.addAttribute("gameGrid",gameGrid);
+		model.addAttribute("turnos",turnos);
+		model.addAttribute("final", finalizado);
 		return "game";
 	}
 }
