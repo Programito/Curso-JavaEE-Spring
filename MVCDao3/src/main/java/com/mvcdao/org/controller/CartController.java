@@ -23,14 +23,7 @@ import com.mvcdao.org.util.Utils;
 public class CartController {
 
 	@RequestMapping(value = "index", method = RequestMethod.GET)
-	public String index(Model model) {
-		List<Item> cart = new ArrayList<Item>();
-		ProductModel productModel = new ProductModel();
-		cart.add(new Item(productModel.find("P003-QE"), 1));
-		cart.add(new Item(productModel.find("P003-QE"), 1));
-		model.addAttribute("cart", cart);
-		model.addAttribute("numero", cart.size());
-		//Utils.sum(cart);
+	public String index() {
 		return "cart/index";
 	}
 
@@ -69,7 +62,11 @@ public class CartController {
 		List<Item> cart = (List<Item>) session.getAttribute("cart");
 
 		int index = this.exists(id, cart);
-		cart.remove(index);
+		//cart.remove(index);
+		if(index!=-1) {
+			delete(index,cart);
+		}
+		
 
 		session.setAttribute("cart", cart);
 
@@ -84,5 +81,21 @@ public class CartController {
 		}
 		return -1;
 	}
+	
+	private void delete(int index, List<Item> cart ) {
+		if(cart.get(index).getQuantity()<=1) {
+			cart.remove(index);
+		}
+		else {
+			cart.get(index).reducir();
+		}
+	}
 
+	public static void writeCart(List<Item> cart) {
+		System.out.println("------------------");
+		for(int i=0;i<cart.size();i++) {
+			System.out.println(cart.get(i));
+		}
+		System.out.println("------------------");
+	}
 }

@@ -16,26 +16,25 @@
 			<th>Price</th>
 			<th>Quantity</th>
 			<th>SubTotal</th>
-			<!-- <th>Suma</th> -->
 		</tr>
-		<tr align="center" tex-align:center th:each="item: ${cart}">
+	
+		<tr align="center" tex-align:center th:each="item: ${session.cart}">
 			<td><a th:href="@{'/cart/remove/' + ${item.product.id}}">Remove</a></td>
 			<td th:text="${item.product.id}"></td>
 			<td th:text="${item.product.name}"></td>
 			<td th:text="${item.product.price}"></td>
 			<td th:text="${item.quantity}"></td>
 			<td th:text="${item.product.price * item.quantity }"></td>
-			<!-- <td th:with="total=${total + 2}" th:text="${total}"></td> -->
-		<tr>
-			<td colspan="6" align="right">Total:</td>
-			<td><p th:text="${T(com.mvcdao.org.util.Utils).sum(cart)}"></p></td>
-		</tr>
+			<tr>
+				<td colspan="6" align="right">Total:</td>
+				<td><p th:text="${T(com.mvcdao.org.util.Utils).sum(session.cart)}"></p></td> 
+			</tr>
 		</tr>
 	</table>
 	<br>
-	<p th:text="${'Total:' + T(com.mvcdao.org.util.Utils).sum(cart)}"></p>
+	<!-- <p th:text="${'Total:' + T(com.mvcdao.org.util.Utils).sum(cart)}"></p> -->
 	<a th:href="@{/product}">Continue Shopping</a>
-
 	<!-- 	</div> -->
+		<!-- ${#session.getAttribute('mySessionAttribute')} -->
 </body>
 </html>

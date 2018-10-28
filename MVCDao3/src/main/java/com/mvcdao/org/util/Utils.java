@@ -12,8 +12,10 @@ public class Utils {
 	}
 	public static double sum(List<Item> items) {
 		double total=0;
-		for(Item item:items) {
-			total+=item.getQuantity() * item.getProduct().getPrice();
+		if(items!=null) {
+			for(Item item:items) {
+				total+=item.getQuantity() * item.getProduct().getPrice();
+			}
 		}
 		return total;
 	}

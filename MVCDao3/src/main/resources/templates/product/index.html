@@ -5,6 +5,49 @@
 <meta charset="UTF-8" />
 </head>
 <body>
-	<p>Productos</p>
+	<h3>Productos Page</h3>
+
+	<table cellpadding="2" cellspacing="2" border="0">
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Price</th>
+			<th>Option</th>
+			<th>BarCode</th>
+		</tr>
+		<tr align="center" tex-align:center th:each="product: ${products}">
+			<td th:text="${product.id}"></td>
+			<td th:text="${product.name}"></td>
+			<td th:text="${product.price}"></td>
+			<td><a th:href="@{'/cart/buy/' + ${product.id}}">Add to Cart</a></td>
+			<td>  <img th:src="@{'/product/barcode/' + ${product.id}}"
+                width="200" height="50"></td>
+		</tr>
+	</table>
+
+	<!-- 	    <table cellpadding="2" cellspacing="2" border="0">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Option</th>
+            <th>BarCode</th>
+        </tr>
+        <c:forEach var="product" items="${products }">
+            <tr>
+                <td>${product.id }</td>
+                <td>${product.name }</td>
+                <td>${product.price }</td>
+                <td align="center">
+                    <a href="${pageContext.request.contextPath }/cart/buy/${product.id}">Add to Cart</a>
+                </td>
+                <td>
+                <img src="${pageContext.request.contextPath }/product/barcode/${product.id}"
+                width="200" height="50"></td>
+            </tr>
+        </c:forEach>
+    </table> -->
+
+
 </body>
 </html>
