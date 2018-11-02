@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+	<div align="center">
+		<font color="green"><h1>Successfully Registered</h1></font>
+		<p th:text="${'userName: ' + msg + ', you have successfully registered in.'}"></p>
+		<font color="green"><h1>Welcome to Spring world !</h1></font>
+
+		<table align="center">
+			<tr>
+				<td><a th:href="@{/login}">Login</a></td>
+				<td><a th:href="@{/newUser}">New User</a></td>
+				<td><a th:href="@{/}">Home</a></td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

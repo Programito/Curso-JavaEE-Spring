@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page Title</title>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<div align="center">
+		<h1>Hello user!</h1>
+
+		<P th:text="${'The time on the server is ' +  serverTime + '.'}"></P>
+		<div style="color: blue" th:text=${msg}></div>
+
+		<table align="center">
+			<tr>
+				<td><a th:href="@{/login}">Login</a></td>
+				<td><a th:href="@{/newUser}">New User</a></td>
+			</tr>
+		</table>
+	</div>
+
+</body>
+</html>
+
+

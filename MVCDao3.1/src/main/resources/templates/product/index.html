@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!-- <head>
+<title>Page Title</title>
+<meta charset="UTF-8" />
+</head> -->
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<div class="container py-5">
+		<div class="card">
+			<div class="card-header text-center bg-dark text-light"
+				th:text="'Productos Page'"></div>
+			<table class="table table-striped table-bordered">
+
+				<thead>
+					<tr>
+						<th class="text-center bg-dark text-light">Option</th>
+						<th class="text-center bg-dark text-light">Id</th>
+						<th class="text-center bg-dark text-light">Name</th>
+						<th class="text-center bg-dark text-light">Price</th>
+						<th class="text-center bg-dark text-light">BarCode</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr align="center" text-align:center th:each="product: ${products}">
+						<td><a class="btn btn-success btn-xs"
+							th:href="@{'/cart/buy/' + ${product.id}}">Add to Cart</a></td>
+						<td th:text="${product.id}"></td>
+						<td th:text="${product.name}"></td>
+						<td th:text="${product.price}"></td>
+						<td><img th:src="@{'/product/barcode/' + ${product.id}}"
+							width="200" height="50"></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- <table cellpadding="2" cellspacing="2" border="0">
+				<tr>
+ -->
+</body>
+</html>

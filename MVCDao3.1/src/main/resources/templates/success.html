@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Page Title</title>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<div align="center">
+		<font color="green"><h1>Successfully logged in</h1></font>
+		<p
+			th:text="${'UserName: '+ {msg} + ', you have successfully logged in.'}"></p> 
+		<font color="green"><h1>Welcome to Spring world !</h1></font>
+
+		<table align="center">
+			<tr>
+				<td><a th:href="@{/login}">Login</a></td>
+				<td><a th:href="@{/newUser}">New User</a></td>
+				<td><a th:href="@{/}">Home</a></td>
+				
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
