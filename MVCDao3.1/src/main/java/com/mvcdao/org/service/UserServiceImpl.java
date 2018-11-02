@@ -31,9 +31,13 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public boolean login(String username, String password) {
 		boolean correcto=false;
-		UserBean userbean= userDao.findByUsername(username).get(0);
-		if(userbean!=null && userbean.getPassword().equals(password)) {
-			correcto=true;
+		List<UserBean> userBeans=userDao.findByUsername(username);
+		if(userBeans!=null && userBeans.size()>0) {
+			UserBean userbean= userDao.findByUsername(username).get(0);
+			if(userbean!=null && userbean.getPassword().equals(password)) {
+				correcto=true;
+			}
+		
 		}
 		return correcto;
 	}

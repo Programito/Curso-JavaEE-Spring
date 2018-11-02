@@ -1,6 +1,7 @@
 package com.mvcdao.org.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +22,6 @@ import com.mvcdao.org.service.IUserService;
 
 import java.text.DateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 @Controller
 public class LoginController {
@@ -30,6 +30,9 @@ public class LoginController {
 
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -42,42 +45,43 @@ public class LoginController {
 
 		model.addAttribute("serverTime", formattedDate);
 		model.addAttribute("msg", "Please Enter Your Login Details o Register your data");
+		
 
 		return "home";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response) {
+	public ModelAndView showLogin(HttpServletRequest request, HttpServletResponse response, Locale locale) {
 
 		ModelAndView mav = new ModelAndView("login");
 		mav.addObject("login", new LoginBean());
+		mav.addObject("title", messageSource.getMessage("text.login.title", null, locale));
 		return mav;
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView loginProcess(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("login") LoginBean login) {
+			@ModelAttribute("login") LoginBean login, Locale locale) {
 
 		System.out.println(login.getUserName());
 		System.out.println(login.getPassword());
 
 		ModelAndView mav = null;
-
-		if (userService.login(login.getUserName(), login.getPassword())) {
+		
+		System.out.println("salida: " + userService.findByUsername(login.getUserName()));
+		System.out.println("Esta " + userService.login(login.getUserName(), login.getPassword()));
+		
+		if(userService.login(login.getUserName(), login.getPassword())) {
 			mav = new ModelAndView("success");
 			mav.addObject("msg", login.getUserName());
-		} else {
-			mav = new ModelAndView("login");
-			mav.addObject("message", "Username or Password is wrong!!");
 		}
+		else {
+			mav = new ModelAndView("login");
+			mav.addObject("error", messageSource.getMessage("text.login.error", null, locale));
+			mav.addObject("title", messageSource.getMessage("text.login.title", null, locale));
+		}
+		
 
-//		if (null != login && login.getUserName().equals("admin")) {
-//			mav = new ModelAndView("success");
-//			mav.addObject("msg", login.getUserName());
-//		} else {
-//			mav = new ModelAndView("login");
-//			mav.addObject("message", "Username or Password is wrong!!");
-//		}
 		return mav;
 	}
 

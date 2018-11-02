@@ -1,36 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
+<!-- <head>
 <title>Page Title</title>
 <meta charset="UTF-8" />
-</head>
+</head> -->
+<head th:replace="layout/layout :: head"></head>
 <body>
-	<form action="#" th:action="@{/login}" th:object="${login}"
-		method="post">
-		<div align="center">
-			<div style="color: blue">Type your userName and Password</div>
+	<header th:replace="layout/layout :: header"></header>
 
-			<table>
-				<tr>
-					<td><label></label></td>
+	<div class="container py-4">
 
-				</tr>
-				<tr>
-					<td><label>User Name</label></td>
-					<td><input type="text" th:field="*{userName}" /></td>
-				</tr>
-				<tr>
-					<td><label>Password</label></td>
-					<td><input type="text" th:field="*{password}" /></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td><input type="submit" value="Submit" /></td>
-				</tr>
-			</table>
-			<div style="color: red"><p th:text=${message}></p></div>
+		<div class="card border-dark text-center">
+			<div class="card-header">
+				<h2 th:text="#{text.login.type}">Sign Up</h2>
+			</div>
 
+
+			<form action="#" th:action="@{/login}" th:object="${login}"
+				method="post">
+				<div align="center">
+
+					<table>
+						<tr>
+							<td><label></label></td>
+
+						</tr>
+						<tr>
+							<td><label th:text="#{text.register.username}">User Name</label></td>
+							<td><input type="text" th:field="*{userName}" /></td>
+						</tr>
+						<tr>
+							<td><label th:text="#{text.register.password}">Password</label></td>
+							<td><input type="text" th:field="*{password}" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td><input class="btn btn-primary btn-lg" type="submit"
+							th:value="${title}" /></td>
+						</tr>
+					</table>
+					<div style="color: red">
+						<p th:text=${error}></p>
+					</div>
+
+				</div>
+
+
+			</form>
 		</div>
-	</form>
+	</div>
 </body>
 </html>
