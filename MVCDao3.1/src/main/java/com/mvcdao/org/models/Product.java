@@ -3,6 +3,8 @@ package com.mvcdao.org.models;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,11 +12,13 @@ import javax.persistence.Table;
 @Table(name = "product")
 public class Product implements Serializable {
 	@Id
+	//@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private String id;
 	private String name;
 	private double price;
 	private int quantity;
 	private boolean status;
+	private String description;
 
 	public Product() {
 
@@ -68,12 +72,23 @@ public class Product implements Serializable {
 	public void setStatus(boolean status) {
 		this.status = status;
 	}
+	
 
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", price=" + price + ", quantity=" + quantity + ", status="
-				+ status + "]";
+				+ status + ", description=" + description + "]";
 	}
+
 
 	private static final long serialVersionUID = 1L;
 
