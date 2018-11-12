@@ -1,5 +1,6 @@
 package com.mvcdao.org.service;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,5 +24,11 @@ public class ProductoServiceImpl implements IProductoService {
 	@Transactional(readOnly=true)
 	public Producto findById(Long id) {
 		return productoDao.findById(id).orElse(null);
+	}
+	
+	@Override
+	@Transactional(readOnly=true)
+	public List<Producto> findAll() {
+		return (List<Producto>) productoDao.findAll();
 	}
 }

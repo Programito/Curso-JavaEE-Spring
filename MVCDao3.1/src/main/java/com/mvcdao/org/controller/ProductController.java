@@ -1,6 +1,7 @@
 package com.mvcdao.org.controller;
 
 import java.io.OutputStream;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -9,12 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mvcdao.org.models.Product;
 import com.mvcdao.org.models.ProductModel;
@@ -87,11 +90,9 @@ public class ProductController {
 	}
 
 	@RequestMapping(value = "/addproduct", method = RequestMethod.POST)
-	public ModelAndView registerProduct(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("newProducto") Producto newProducto, @RequestParam("file") MultipartFile foto) {
-
-		ModelAndView mav = new ModelAndView("product/addproduct");
-		System.out.println(newProducto);
+	public String registerProduct(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("newProducto") Producto newProducto, @RequestParam("file") MultipartFile foto,
+			RedirectAttributes flash, Model model) {
 
 		if (!foto.isEmpty()) {
 			String uniqueFilename = null;
@@ -105,7 +106,7 @@ public class ProductController {
 		}
 
 		productoService.save(newProducto);
-		return mav;
+		return "redirect:viewproducts";
 	}
 
 	@RequestMapping(value = "/viewproduct/{id}", method = RequestMethod.GET)
@@ -118,9 +119,17 @@ public class ProductController {
 			mav = new ModelAndView("product/addproduct");
 		} else {
 			mav = new ModelAndView("product/viewproduct");
-			mav.addObject("hola", 3);
 			mav.addObject("producto", producto);
 		}
 		return mav;
 	}
+
+	@RequestMapping(value = "/viewproducts", method = RequestMethod.GET)
+	public ModelAndView viewProducts(HttpServletRequest request, HttpServletResponse response) {
+		ModelAndView mav = new ModelAndView("product/viewproducts");
+		List<Producto> productos = productoService.findAll();
+		mav.addObject("productos", productos);
+		return mav;
+	}
+
 }

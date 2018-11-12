@@ -34,7 +34,7 @@
 					<h2 th:if="${producto.description != null}"
 						th:text="|Description: ${producto.description}|"></h2>
 					</li>
-					<li class="list-group-item">
+					<li class="list-group-item"  th:if="${producto.foto != null}">
 					<img th:if="${#strings.length(producto.foto) > 0}"
 						class="img-thumbnail rounded float-center justify-content-center my-3" style="max-width: 20%;"
 						th:src="@{'/product/uploads/' + ${producto.foto}}"

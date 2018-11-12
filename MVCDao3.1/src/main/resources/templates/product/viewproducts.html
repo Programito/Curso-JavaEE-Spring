@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+
+
+
+	<header th:replace="layout/layout :: header"></header>
+
+
+	<a class="btn btn-primary btn-xs my-4 mx-5" th:href="@{'/product/addproduct'}"
+		th:text="'Add Product'"></a>
+		
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header">
+
+				<h2 class="card-title text-center">Product List</h2>
+			</div>
+
+		</div>
+		<div class="card-body">
+			<table th:if="${not #lists.isEmpty(productos)}"
+				class="table table-bordered table-striped my-4">
+				<thead class="thead-inverse">
+					<tr>
+						<th>Name</th>
+						<th>Price</th>
+						<th>Quantity</th>
+						<th>Status</th>
+						<th>ver</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="producto: ${productos}">
+						<td th:text="${producto.name}"></td>
+						<td th:text="${producto.price}"></td>
+						<td th:text="${producto.quantity}"></td>
+						<td th:text="${producto.description}"></td>
+						<td><a class="btn btn-primary btn-xs"
+							th:href="@{'/product/viewproduct/' + ${producto.id}}"
+							th:text="'view'"></a></td>
+
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
