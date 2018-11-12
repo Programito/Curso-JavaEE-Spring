@@ -34,6 +34,19 @@ public class UploadServiceImpl implements IUploadService {
 		return uniqueFilename;
 	}
 
+	@Override
+	public Resource load(String filename) throws MalformedURLException {
+		Path pathFoto = getPath(filename);
+		log.info("pathFoto: " + pathFoto);
+		Resource recurso = null;
+
+		recurso = new UrlResource(pathFoto.toUri());
+		if (!recurso.exists() || !recurso.isReadable()) {
+			throw new RuntimeException("Eror: no se puede cargar la imagen  " + pathFoto.toString());
+		}
+		return recurso;
+	}
+
 	public Path getPath(String filename) {
 		return Paths.get(UPLOADS_FOLDER).resolve(filename).toAbsolutePath();
 	}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="container py-4">
+
+		<div class="card bg-light">
+			<div class="card-header">
+				<h2 class="card-title text-center" th:if="${producto.name != null}"
+					th:text="|Name: ${producto.name}|"></h2>
+			</div>
+			<div class="card-body">
+				<ul class="list-group">
+					<li class="list-group-item">
+						<h3 th:text="|Id: ${producto.id}|"></h3>
+					</li>
+					<li class="list-group-item">
+						<h3 th:if="${producto.name != null}" th:text="|Name: ${producto.name}|">
+							</h3>
+					</li>
+					<li class="list-group-item">
+					<h2 th:if="${producto.price != null}" th:text="|Price: ${producto.price}|"></h2>
+					</li>
+					<li class="list-group-item">
+					<h2 th:if="${producto.quantity != null}"
+						th:text="|Quantity: ${producto.quantity}|"></h2>
+					</li>
+					<li class="list-group-item">
+					<h2 th:if="${producto.status != null}" th:text="|Status: ${producto.status}|"></h2>
+					</li>
+					<li class="list-group-item">
+					<h2 th:if="${producto.description != null}"
+						th:text="|Description: ${producto.description}|"></h2>
+					</li>
+					<li class="list-group-item">
+					<img th:if="${#strings.length(producto.foto) > 0}"
+						class="img-thumbnail rounded float-center justify-content-center my-3" style="max-width: 20%;"
+						th:src="@{'/product/uploads/' + ${producto.foto}}"
+						th:alt="${producto.foto}" />
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

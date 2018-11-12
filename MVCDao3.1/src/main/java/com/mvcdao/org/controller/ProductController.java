@@ -27,6 +27,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 
+// load image
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.ResponseEntity;
+import org.springframework.core.io.Resource;
+import java.net.MalformedURLException;
+import org.springframework.http.HttpHeaders;
+
 @Controller
 @RequestMapping(value = { "product" })
 public class ProductController {
@@ -36,6 +43,22 @@ public class ProductController {
 
 	@Autowired
 	private IUploadService uploadService;
+
+	@GetMapping(value = "/uploads/{filename:.+}")
+	public ResponseEntity<Resource> verFoto(@PathVariable String filename) {
+		Resource recurso = null;
+		System.out.println("---------------------entre-------------------------------------");
+		try {
+			recurso = uploadService.load(filename);
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + recurso.getFilename() + "\"")
+				.body(recurso);
+	}
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String index(ModelMap modelMap) {
@@ -69,7 +92,7 @@ public class ProductController {
 
 		ModelAndView mav = new ModelAndView("product/addproduct");
 		System.out.println(newProducto);
-		
+
 		if (!foto.isEmpty()) {
 			String uniqueFilename = null;
 			try {
@@ -77,13 +100,27 @@ public class ProductController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			System.out.println("Has subido correctamente '" + uniqueFilename + "'");	
+			System.out.println("Has subido correctamente '" + uniqueFilename + "'");
 			newProducto.setFoto(uniqueFilename);
 		}
-		
-		
+
 		productoService.save(newProducto);
 		return mav;
 	}
 
+	@RequestMapping(value = "/viewproduct/{id}", method = RequestMethod.GET)
+	public ModelAndView viewProduct(@PathVariable("id") Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav;
+		Producto producto = productoService.findById(id);
+		if (producto == null) {
+			System.out.println("No existe producto con ese id");
+			mav = new ModelAndView("product/addproduct");
+		} else {
+			mav = new ModelAndView("product/viewproduct");
+			mav.addObject("hola", 3);
+			mav.addObject("producto", producto);
+		}
+		return mav;
+	}
 }
