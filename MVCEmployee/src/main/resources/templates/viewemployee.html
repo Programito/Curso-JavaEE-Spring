@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head"></head>
+<body>
+	<h2>View Employee</h2>
+	<h3 th:text="|name: ${employee.name}|"></h3>
+
+	<h1 th:if="${phones != null}" th:each="phone: ${phones}"
+		th:text="|Phone: ${phone.phoneNumber}|"></h1>
+
+	<a class="btn btn-success btn-xs"
+		th:href="@{'/'}" th:text="'Return'"></a>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
