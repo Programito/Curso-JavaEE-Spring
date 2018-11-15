@@ -37,6 +37,9 @@ public class Employee implements Serializable {
 	   joinColumns=@JoinColumn(name="EMP_ID", referencedColumnName="id"),
 	   inverseJoinColumns=@JoinColumn(name="PROJ_ID", referencedColumnName="id"))
 	private List<Project> projects;
+	
+	@Embedded
+	private Address address; 
 
 	public Employee() {
 
@@ -74,6 +77,14 @@ public class Employee implements Serializable {
 
 	public void setProjects(List<Project> projects) {
 		this.projects = projects;
+	}
+	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override

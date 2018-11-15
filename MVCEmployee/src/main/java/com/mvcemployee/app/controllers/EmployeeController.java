@@ -6,12 +6,14 @@ import org.springframework.stereotype.Controller;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.mvcemployee.app.models.entity.Address;
 import com.mvcemployee.app.models.entity.Employee;
 import com.mvcemployee.app.models.entity.Phone;
 import com.mvcemployee.app.models.entity.Project;
@@ -41,35 +43,21 @@ public class EmployeeController {
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(Model model) {
 		Employee employee = new Employee();
-		employee.setName("Juan");
-		Phone phone = new Phone();
-		phone.setPhoneNumber("12312312321");
-		phone.setEmployee(employee);
-		List<Phone> phones = new ArrayList<Phone>();
-		phones.add(phone);
-		employee.setPhones(phones);
+		employee.setName("hola");
 		employeeService.saveEmployee(employee);
-		employee = employeeService.findOne(1L);
-		if (employee == null) {
-			System.out.println("es nulo");
-		} else {
-			System.out.println("NO es nulo");
-			System.out.println(employee.getName());
-			if (employee.getPhones() == null) {
-				System.out.println("phone es null");
-			} else {
-				System.out.println("phone NO es null");
-				System.out.println(employee.getPhones().size());
-				System.out.println(employee.getPhones().get(0).getPhoneNumber());
-			}
-
-		}
-		// employeeService.savePhone(phone);
-
+		
+		Employee employee1 = new Employee();
+		employee1.setName("adios");
+		
+		Address address= new Address();
+		address.setAddressCountry("Catalunya");
+		address.setAddressCity("Barcelona");
+		employee1.setAddress(address);
+		employeeService.saveEmployee(employee1);
 		return "home";
 	}
 
-	@RequestMapping(value = { "/" }, method = RequestMethod.GET)
+	@RequestMapping(value = { "/","/*" }, method = RequestMethod.GET)
 	public ModelAndView viewEmployees(HttpServletRequest request, HttpServletResponse response) {
 		ModelAndView mav = new ModelAndView("viewemployees");
 		List<Employee> employees = employeeService.findAllEmployee();
@@ -105,11 +93,12 @@ public class EmployeeController {
 			System.out.println("Employee con id " + id + "no existe");
 			mav = new ModelAndView("viewemployees");
 		} else {
+			System.out.println("entro por opcion 2");
 			mav = new ModelAndView("viewemployee");
 			mav.addObject("employee", employee);
 			mav.addObject("phones", employee.getPhones());
-			mav.addObject("projects", employee.getProjects());
-			System.out.println(employee.getPhones().size());
+			mav.addObject("projects", employee.getProjects());			
+			mav.addObject("address",employee.getAddress());
 		}
 		return mav;
 	}
@@ -209,18 +198,29 @@ public class EmployeeController {
 
 	@RequestMapping(value = "addproject/{id}", method = RequestMethod.GET)
 	public ModelAndView addProject(@PathVariable("id") Long id, HttpServletRequest request,
-			HttpServletResponse response) {
+			HttpServletResponse response, RedirectAttributes flash, Model model) {
 		ModelAndView mav;
-
+		if(id==null) {
+			mav = new ModelAndView("viewemployees");
+			List<Employee> employees = employeeService.findAllEmployee();
+			mav.addObject("employees", employees);
+			System.out.println("Lista de proyectos vacia");
+			return mav;
+		}
 		Employee employee = employeeService.findOne(id);
 		if (employee == null) {
 			System.out.println("Employee con id " + id + "no existe");
 			mav = new ModelAndView("viewemployees");
+			return mav;
 		} else {
 			List<Project> projects = projectService.findAllProject();
-			if (projects == null) {
-				mav = new ModelAndView("viewemployees");
+			if (projects == null || projects.size()==0) {
+				//mav = new ModelAndView("viewemployees");
+				mav= new ModelAndView("redirect:/");
+				List<Employee> employees = employeeService.findAllEmployee();
+				mav.addObject("employees", employees);
 				System.out.println("Lista de proyectos vacia");
+				
 				return mav;
 			} else {
 				mav = new ModelAndView("addproject");
@@ -235,6 +235,13 @@ public class EmployeeController {
 					}
 				}
 				
+				if(projects.size()==0) {
+					mav = new ModelAndView("viewemployees");
+					List<Employee> employees = employeeService.findAllEmployee();
+					mav.addObject("employees", employees);
+					System.out.println("Lista de proyectos vacia");
+					return mav;
+				}
 				mav.addObject("projects", projects);
 				mav.addObject("id", id);
 				Project project = new Project();
@@ -269,16 +276,43 @@ public class EmployeeController {
 			return "redirect:/";
 		}
 		if (!projects.contains(project)) {
-			System.out.println("entre por save");
-			System.out.println(project.getId());
-			System.out.println(employee.getId());
-			System.out.println(employee.getName());
-			System.out.println(project.getName());
 			projects.add(project);
 			employee.setProjects(projects);
 			employeeService.saveEmployee(employee);
 		}
 
+		return "redirect:/";
+	}
+	
+	
+	@RequestMapping(value = "addaddress/{id}", method = RequestMethod.GET)
+	public ModelAndView addAdress(@PathVariable("id") Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav;
+
+		Employee employee = employeeService.findOne(id);
+		if (employee == null) {
+			System.out.println("Employee con id " + id + "no existe");
+			mav = new ModelAndView("viewemployees");
+		} else {
+			mav = new ModelAndView("addaddress");
+			mav.addObject("newAddress", new Address());
+			mav.addObject("id", id);
+		}
+		return mav;
+	}
+	
+	@RequestMapping(value = "addaddress/{id}", method = RequestMethod.POST)
+	public String registerProduct(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("newAddress") Address newAddress, RedirectAttributes flash, Model model) {
+
+		Employee employee = employeeService.findOne(id);
+		if (employee == null) {
+			System.out.println("employee con id" + id + "es nulo");
+		} else {
+			employee.setAddress(newAddress);
+			employeeService.saveEmployee(employee);
+		}
 		return "redirect:/";
 	}
 

@@ -28,6 +28,7 @@
 						<th>View</th>
 						<th>id</th>
 						<th>Name</th>
+						<th>Add Address</th>
 						<th>Add Phone</th>
 						<th>Add Project</th>
 					</tr>
@@ -38,6 +39,8 @@
 							th:href="@{'viewemployee/' + ${employee.id}}" th:text="'view'"></a></td>
 						<td th:text="${employee.id}"></td>
 						<td th:text="${employee.name}"></td>
+						<td><a class="btn btn-success btn-xs"
+							th:href="@{'addaddress/' + ${employee.id}}" th:text="'Add Adress'"></a></td>
 						<td><a class="btn btn-success btn-xs"
 							th:href="@{'addphone/' + ${employee.id}}" th:text="'Add Phone'"></a></td>
 						<td><a class="btn btn-success btn-xs"
