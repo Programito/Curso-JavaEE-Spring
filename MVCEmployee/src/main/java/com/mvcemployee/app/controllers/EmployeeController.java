@@ -29,6 +29,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Map;
+import org.springframework.context.MessageSource;
+import java.util.Locale;
+
 
 @Controller
 public class EmployeeController {
@@ -39,6 +42,9 @@ public class EmployeeController {
 
 	@Autowired
 	private IProjectService projectService;
+	
+	@Autowired
+	private MessageSource messageSource;
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(Model model) {
@@ -73,14 +79,23 @@ public class EmployeeController {
 	}
 
 	@RequestMapping(value = "addemployee", method = RequestMethod.POST)
-	public String registerEmployee(HttpServletRequest request, HttpServletResponse response,
-			@ModelAttribute("newEmployee") Employee newEmployee, RedirectAttributes flash, Model model) {
+	public ModelAndView registerEmployee(HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("newEmployee") Employee newEmployee, RedirectAttributes flash, Model model, Locale locale) {
 
 		if (newEmployee != null && newEmployee.getName() != null && newEmployee.getName() != "") {
 			employeeService.saveEmployee(newEmployee);
+			
+			ModelAndView mav= new ModelAndView("viewemployees");
+			List<Employee> employees = employeeService.findAllEmployee();
+			mav.addObject("employees", employees);
+			return mav;
+		}
+		else {
+			ModelAndView mav= new ModelAndView("addemployee");
+			mav.addObject("employeName", messageSource.getMessage("text.error.employee.name", null, locale));
+			return mav;
 		}
 
-		return "redirect:/";
 	}
 
 	@RequestMapping(value = "viewemployee/{id}", method = RequestMethod.GET)

@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/layout :: head"></head>
 <body>
+	<header th:replace="layout/layout :: header"></header>
 	<h1>Add Project</h1>
 
 	<div class="container py-4">
@@ -11,8 +12,8 @@
 				<h2>New Project</h2>
 			</div>
 			<div class="card-body bg-dark text-light">
-				<form action="#" th:action="@{addproject}"
-					th:object="${newProject}" method="post">
+				<form action="#" th:action="@{addproject}" th:object="${newProject}"
+					method="post">
 					<div
 						class="form-group row align-items-center justify-content-center">
 						<label class="col-2 col-form-label" for="name">Name:</label>
@@ -27,7 +28,7 @@
 				</form>
 			</div>
 		</div>
-	</div> 
+	</div>
 
 	<footer th:replace="layout/layout :: footer"></footer>
 </body>
