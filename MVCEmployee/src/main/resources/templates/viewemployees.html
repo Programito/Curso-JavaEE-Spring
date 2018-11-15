@@ -6,6 +6,9 @@
 
 	<a class="btn btn-primary btn-xs my-4 mx-5" th:href="@{'/addemployee'}"
 		th:text="'Add Employee'"></a>
+		
+		<a class="btn btn-primary btn-xs my-4 mx-5" th:href="@{'/addproject'}"
+		th:text="'Add Project'"></a>
 
 	<div class="container py-4">
 
@@ -26,7 +29,7 @@
 						<th>id</th>
 						<th>Name</th>
 						<th>Add Phone</th>
-
+						<th>Add Project</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -37,7 +40,8 @@
 						<td th:text="${employee.name}"></td>
 						<td><a class="btn btn-success btn-xs"
 							th:href="@{'addphone/' + ${employee.id}}" th:text="'Add Phone'"></a></td>
-
+						<td><a class="btn btn-success btn-xs"
+							th:href="@{'addproject/' + ${employee.id}}" th:text="'Add Project'"></a></td>
 					</tr>
 				</tbody>
 			</table>

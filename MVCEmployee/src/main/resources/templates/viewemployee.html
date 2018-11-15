@@ -5,8 +5,13 @@
 	<h2>View Employee</h2>
 	<h3 th:text="|name: ${employee.name}|"></h3>
 
-	<h1 th:if="${phones != null}" th:each="phone: ${phones}"
-		th:text="|Phone: ${phone.phoneNumber}|"></h1>
+	<h2 th:if="${phones != null}" th:text="'Phones:'"></h2>
+	<h4 th:if="${phones != null}" th:each="phone: ${phones}"
+		th:text="|Phone: ${phone.phoneNumber}|"></h4>
+		
+	<h2 th:if="${projects != null}" th:text="'Projects:'"></h2>
+	<h4 th:if="${projects != null}" th:each="project: ${projects}"
+		th:text="|Project: ${project.name}|"></h4>
 
 	<a class="btn btn-success btn-xs"
 		th:href="@{'/'}" th:text="'Return'"></a>

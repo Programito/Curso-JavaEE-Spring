@@ -3,6 +3,8 @@ package com.mvcemployee.app.models.entity;
 import javax.persistence.Entity;
 import java.io.Serializable;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.validation.constraints.NotEmpty;
@@ -12,6 +14,8 @@ import javax.persistence.FetchType;
 import javax.persistence.CascadeType;
 
 import java.util.List;
+
+import javax.persistence.*;
 
 @Entity
 public class Employee implements Serializable {
@@ -26,10 +30,18 @@ public class Employee implements Serializable {
 	@OneToMany(mappedBy = "employee", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<Phone> phones;
 
-	public Employee() {
-		
-	}
 	
+	@ManyToMany(fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	 @JoinTable(
+	   name="EMP_PROJ",
+	   joinColumns=@JoinColumn(name="EMP_ID", referencedColumnName="id"),
+	   inverseJoinColumns=@JoinColumn(name="PROJ_ID", referencedColumnName="id"))
+	private List<Project> projects;
+
+	public Employee() {
+
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -54,12 +66,20 @@ public class Employee implements Serializable {
 		this.phones = phones;
 	}
 	
+	
+
+	public List<Project> getProjects() {
+		return projects;
+	}
+
+	public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
 	@Override
 	public String toString() {
 		return "Employee [id=" + id + ", name=" + name + "]";
 	}
-
-
 
 	private static final long serialVersionUID = 1L;
 

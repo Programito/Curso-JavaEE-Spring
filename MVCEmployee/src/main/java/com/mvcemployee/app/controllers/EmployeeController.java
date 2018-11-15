@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.mvcemployee.app.models.entity.Employee;
 import com.mvcemployee.app.models.entity.Phone;
+import com.mvcemployee.app.models.entity.Project;
 import com.mvcemployee.app.models.service.IEmployeeService;
+import com.mvcemployee.app.models.service.IProjectService;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -32,6 +34,9 @@ public class EmployeeController {
 
 	@Autowired
 	private IEmployeeService employeeService;
+
+	@Autowired
+	private IProjectService projectService;
 
 	@RequestMapping(value = { "/home" }, method = RequestMethod.GET)
 	public String home(Model model) {
@@ -102,7 +107,8 @@ public class EmployeeController {
 		} else {
 			mav = new ModelAndView("viewemployee");
 			mav.addObject("employee", employee);
-			mav.addObject("phones",employee.getPhones());
+			mav.addObject("phones", employee.getPhones());
+			mav.addObject("projects", employee.getProjects());
 			System.out.println(employee.getPhones().size());
 		}
 		return mav;
@@ -145,8 +151,6 @@ public class EmployeeController {
 //		return "addphone";
 //}
 
-
-
 //	@RequestMapping(value = "/addphone", method = RequestMethod.POST)
 //	public String registerProduct(HttpServletRequest request, HttpServletResponse response,
 //			@ModelAttribute("newPhone") Phone newPhone,
@@ -184,22 +188,97 @@ public class EmployeeController {
 		}
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "/addphone/{id}", method = RequestMethod.POST)
 	public String registerProduct(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response,
 			@ModelAttribute("newPhone") Phone newPhone, RedirectAttributes flash, Model model) {
 
 		Employee employee = employeeService.findOne(id);
-		Phone phone= new Phone();
+		Phone phone = new Phone();
 		if (employee == null) {
 			System.out.println("employee con id" + id + "es nulo");
 		} else {
-			//newPhone.setEmployee(employee);
-			//employeeService.savePhone(newPhone);
+			// newPhone.setEmployee(employee);
+			// employeeService.savePhone(newPhone);
 			phone.setEmployee(employee);
 			phone.setPhoneNumber(newPhone.getPhoneNumber());
 			employeeService.savePhone(phone);
 		}
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "addproject/{id}", method = RequestMethod.GET)
+	public ModelAndView addProject(@PathVariable("id") Long id, HttpServletRequest request,
+			HttpServletResponse response) {
+		ModelAndView mav;
+
+		Employee employee = employeeService.findOne(id);
+		if (employee == null) {
+			System.out.println("Employee con id " + id + "no existe");
+			mav = new ModelAndView("viewemployees");
+		} else {
+			List<Project> projects = projectService.findAllProject();
+			if (projects == null) {
+				mav = new ModelAndView("viewemployees");
+				System.out.println("Lista de proyectos vacia");
+				return mav;
+			} else {
+				mav = new ModelAndView("addproject");
+				
+				//en el select no aparezcan los proyectos activos
+				List<Project> projectActive=employee.getProjects();
+				if(projectActive != null) {
+					for(int i=0;i<projectActive.size();i++) {
+						if(projects.contains(projectActive.get(i))){
+							projects.remove(projectActive.get(i));
+						}
+					}
+				}
+				
+				mav.addObject("projects", projects);
+				mav.addObject("id", id);
+				Project project = new Project();
+				project.setName("vacio");
+				mav.addObject("newProject", project);
+			}
+		}
+		return mav;
+	}
+
+	@RequestMapping(value = "/addproject/{id}", method = RequestMethod.POST)
+	public String registerProject(@PathVariable("id") Long id, HttpServletRequest request, HttpServletResponse response,
+			@ModelAttribute("newProject") Project newProject, RedirectAttributes flash, Model model) {
+
+		Employee employee = employeeService.findOne(id);
+		if (employee == null) {
+			System.out.println("employee con id" + id + "es nulo");
+			return "redirect:/";
+		}
+		List<Project> projects = employee.getProjects();
+
+		if (projects == null) {
+			projects = new ArrayList<Project>();
+		}
+		if (newProject.getId() == null) {
+			System.out.println("new project con id" + id + "es nulo");
+			return "redirect:/";
+		}
+		Project project = projectService.findOne(newProject.getId());
+		if (project == null) {
+			System.out.println("No exise el project " + newProject.getId());
+			return "redirect:/";
+		}
+		if (!projects.contains(project)) {
+			System.out.println("entre por save");
+			System.out.println(project.getId());
+			System.out.println(employee.getId());
+			System.out.println(employee.getName());
+			System.out.println(project.getName());
+			projects.add(project);
+			employee.setProjects(projects);
+			employeeService.saveEmployee(employee);
+		}
+
 		return "redirect:/";
 	}
 
