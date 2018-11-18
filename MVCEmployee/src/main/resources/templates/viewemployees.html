@@ -33,6 +33,7 @@
 						<th>Add Address</th>
 						<th>Add Phone</th>
 						<th>Add Project</th>
+						<th>Add Developer</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -49,6 +50,9 @@
 						<td><a class="btn btn-success btn-xs"
 							th:href="@{'addproject/' + ${employee.id}}"
 							th:text="'Add Project'"></a></td>
+						<td><a class="btn btn-success btn-xs"
+							th:href="@{'developer/' + ${employee.id}}"
+							th:text="'Add Developer'"></a></td>
 					</tr>
 				</tbody>
 			</table>

@@ -41,6 +41,10 @@ public class Employee implements Serializable {
 	@Embedded
 	private Address address; 
 
+	@OneToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="IDDEVELOPER")
+	private Developer developer;
+
 	public Employee() {
 
 	}
@@ -85,6 +89,15 @@ public class Employee implements Serializable {
 
 	public void setAddress(Address address) {
 		this.address = address;
+	}
+	
+	
+	public Developer getDeveloper() {
+		return developer;
+	}
+
+	public void setDeveloper(Developer developer) {
+		this.developer = developer;
 	}
 
 	@Override
